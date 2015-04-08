@@ -4,8 +4,8 @@ Changelog
 3.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Make it possible to have non-ASCII characters in filenames
+  [pysailor]
 
 3.0.0 (2015-03-08)
 ------------------

@@ -3,13 +3,14 @@ from os import linesep
 from App.class_init import InitializeClass
 from Products.CMFDiffTool.BaseDiff import _getValue
 from Products.CMFDiffTool.FieldDiff import FieldDiff
+from Products.CMFPlone.utils import safe_unicode
 
 
 class BinaryDiff(FieldDiff):
     """Simple binary difference"""
 
     meta_type = "Binary Diff"
-    inlinediff_fmt = """
+    inlinediff_fmt = u"""
 <div class="%s">
     <del>%s</del>
     <ins>%s</ins>
@@ -23,7 +24,7 @@ class BinaryDiff(FieldDiff):
             # binary files, return an empty list
             return []
         else:
-            return [self.filenameTitle(filename)]
+            return [self.filenameTitle(safe_unicode(filename)).encode('utf-8')]
 
     def testChanges(self, ob):
         """Test the specified object to determine if the change set will apply without errors"""
@@ -44,11 +45,11 @@ class BinaryDiff(FieldDiff):
         css_class = 'FilenameDiff'
         html = []
         if self.oldFilename != self.newFilename:
-            html.append(
-                self.inlinediff_fmt % (css_class,
-                                       self.filenameTitle(self.oldFilename),
-                                       self.filenameTitle(self.newFilename))
-            )
+            line = self.inlinediff_fmt % (
+                css_class,
+                self.filenameTitle(safe_unicode(self.oldFilename)),
+                self.filenameTitle(safe_unicode(self.newFilename)))
+            html.append(line.encode('utf-8'))
 
         if html:
             return linesep.join(html)
